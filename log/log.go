@@ -1,7 +1,6 @@
 package log
 
 import (
-	"b2c-log/constant"
 	"fmt"
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
 	"go.uber.org/zap"
@@ -25,12 +24,12 @@ func Hook() io.Writer {
 func SetLogs(logLevel string, logDir string, logSoftLink string) {
 
 	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:       constant.TimeKey,
-		LevelKey:      constant.LevelKey,
-		NameKey:       constant.NameKey,
-		CallerKey:     constant.CallerKey,
-		MessageKey:    constant.MessageKey,
-		StacktraceKey: constant.StacktraceKey,
+		TimeKey:       TimeKey,
+		LevelKey:      LevelKey,
+		NameKey:       NameKey,
+		CallerKey:     CallerKey,
+		MessageKey:    MessageKey,
+		StacktraceKey: StacktraceKey,
 		LineEnding:    zapcore.DefaultLineEnding,
 		EncodeLevel:   zapcore.CapitalLevelEncoder, // 大写编码器
 		EncodeTime:    zapcore.ISO8601TimeEncoder,  // ISO8601 UTC 时间格式
