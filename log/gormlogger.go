@@ -1,6 +1,8 @@
 package log
 
-import "go.uber.org/zap"
+import (
+	"go.uber.org/zap"
+)
 
 // GormLogger struct
 type GormLogger struct{}
