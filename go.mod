@@ -1,4 +1,4 @@
-module b2c-log
+module  github.com/cargod-bj/b2c-log
 
 go 1.14
 
