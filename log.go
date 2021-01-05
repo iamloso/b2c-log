@@ -15,9 +15,6 @@ var (
 	_hook    io.Writer
 )
 
-func Log() Factory {
-	return _globalL
-}
 func Hook() io.Writer {
 	return _hook
 }
@@ -75,7 +72,7 @@ func SetLogs(logLevel string, logDir string, logSoftLink string) {
 	// 构造日志
 	logger := zap.New(core, opts...)
 	zap.ReplaceGlobals(logger)
-	_globalL = NewFactory(zap.L())
+	_globalL = newFactory(zap.L())
 }
 
 func getWriter(logDir string, logSoftLink string) io.Writer {

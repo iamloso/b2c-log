@@ -9,7 +9,7 @@ type GormLogger struct{}
 func (*GormLogger) Print(v ...interface{}) {
 	switch v[0] {
 	case "sql":
-		zap.L().Info(
+		Bg().Info(
 			"sql",
 			zap.Any("src", v[1]),
 			zap.Any("duration", v[2]),
@@ -18,6 +18,6 @@ func (*GormLogger) Print(v ...interface{}) {
 			zap.Any("rows_returned", v[5]),
 		)
 	case "log":
-		zap.L().Error("error", zap.Any("gorm", v[2]))
+		Bg().Error("error", zap.Any("gorm", v[2]))
 	}
 }

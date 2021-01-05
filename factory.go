@@ -31,21 +31,21 @@ type Factory struct {
 }
 
 // NewFactory creates a new Factory.
-func NewFactory(logger *zap.Logger) Factory {
+func newFactory(logger *zap.Logger) Factory {
 	return Factory{logger: logger}
 }
 
 // Bg creates a context-unaware logger.
-func (b Factory) Bg() Logger {
-	return logger(b)
+func Bg() Logger {
+	return logger(_globalL)
 }
 
 // For returns a context-aware Logger. If the context
 // contains an OpenTracing span, all logging calls are also
 // echo-ed into the span.
-func (b Factory) Ctx(ctx context.Context) Logger {
+func Ctx(ctx context.Context) Logger {
 	if span := opentracing.SpanFromContext(ctx); span != nil {
-		logger := spanLogger{span: span, logger: b.logger}
+		logger := spanLogger{span: span, logger: _globalL.logger}
 		if jaegerCtx, ok := span.Context().(jaeger.SpanContext); ok {
 			logger.spanFields = []zapcore.Field{
 				zap.String("trace_id", jaegerCtx.TraceID().String()),
@@ -54,7 +54,7 @@ func (b Factory) Ctx(ctx context.Context) Logger {
 		}
 		return logger
 	}
-	return b.Bg()
+	return Bg()
 }
 
 // With creates a child logger, and optionally adds some context fields to that logger.
