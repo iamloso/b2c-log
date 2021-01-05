@@ -1,4 +1,4 @@
-package log
+package b2c_log
 
 import (
 	"fmt"
