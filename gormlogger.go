@@ -1,4 +1,4 @@
-package b2c_log
+package log
 
 import "go.uber.org/zap"
 
