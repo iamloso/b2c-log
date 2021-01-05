@@ -43,6 +43,12 @@ func (sl spanLogger) Error(msg string, params ...interface{}) {
 	sl.logger.Error(msg, append(sl.spanFields, fields...)...)
 }
 
+func (sl spanLogger) Debug(msg string, params ...interface{}) {
+	fields := ToFields(params)
+	sl.logToSpan("debug", msg, fields...)
+	sl.logger.Debug(msg, append(sl.spanFields, fields...)...)
+}
+
 func (sl spanLogger) Fatal(msg string, params ...interface{}) {
 	fields := ToFields(params)
 	sl.logToSpan("fatal", msg, fields...)

@@ -37,9 +37,7 @@ func SetLogs(logLevel string, logDir string, logSoftLink string) {
 	}
 
 	// 设置日志输出格式
-	var encoder zapcore.Encoder
-
-	encoder = zapcore.NewConsoleEncoder(encoderConfig)
+	encoder := zapcore.NewConsoleEncoder(encoderConfig)
 	// 设置日志级别,debug可以打印出info,debug,warn；info级别可以打印warn，info；warn只能打印warn
 	// debug->info->warn->error
 	var zapLevel zapcore.Level
@@ -57,7 +55,8 @@ func SetLogs(logLevel string, logDir string, logSoftLink string) {
 	_hook = getWriter(logDir, logSoftLink)
 	// 最后创建具体的Logger
 	core := zapcore.NewTee(
-		zapcore.NewCore(encoder, zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(_hook)), zapLevel),
+		zapcore.NewCore(encoder, zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(_hook)), zap.NewAtomicLevelAt(zapLevel)),// 日志级别
+
 	)
 
 	opts := []zap.Option{
