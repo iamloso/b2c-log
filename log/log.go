@@ -28,8 +28,8 @@ func SetLogs(logLevel string, logDir string, logSoftLink string) {
 		MessageKey:    MessageKey,
 		StacktraceKey: StacktraceKey,
 		LineEnding:    zapcore.DefaultLineEnding,
-		EncodeLevel:   zapcore.CapitalColorLevelEncoder, // 大写编码器
-		EncodeTime:    zapcore.ISO8601TimeEncoder,       // ISO8601 UTC 时间格式
+		EncodeLevel:   zapcore.CapitalLevelEncoder, // 大写编码器
+		EncodeTime:    zapcore.ISO8601TimeEncoder,  // ISO8601 UTC 时间格式
 		// ISO8601 UTC 时间格式
 		EncodeDuration: zapcore.SecondsDurationEncoder, //
 		EncodeCaller:   zapcore.ShortCallerEncoder,     // 短路径编码器(相对路径+行号)
