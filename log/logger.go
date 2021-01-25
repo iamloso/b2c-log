@@ -28,6 +28,7 @@ type Logger interface {
 	Error(msg string, params ...interface{})
 	Debug(msg string, params ...interface{})
 	Fatal(msg string, params ...interface{})
+	Warn(msg string, params ...interface{})
 	With(fields ...zapcore.Field) Logger
 }
 
@@ -44,6 +45,11 @@ func (l logger) Info(msg string, params ...interface{}) {
 // Error logs an error msg with fields
 func (l logger) Error(msg string, params ...interface{}) {
 	l.logger.Error(msg, ToFields(params)...)
+}
+
+// Warn logs an error msg with fields
+func (l logger) Warn(msg string, params ...interface{}) {
+	l.logger.Warn(msg, ToFields(params)...)
 }
 
 // Debug logs an error msg with fields

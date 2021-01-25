@@ -55,6 +55,11 @@ func (sl spanLogger) Fatal(msg string, params ...interface{}) {
 	tag.Error.Set(sl.span, true)
 	sl.logger.Fatal(msg, append(sl.spanFields, fields...)...)
 }
+func (sl spanLogger) Warn(msg string, params ...interface{}) {
+	fields := ToFields(params)
+	sl.logToSpan("error", msg, fields...)
+	sl.logger.Warn(msg, append(sl.spanFields, fields...)...)
+}
 
 // With creates a child logger, and optionally adds some context fields to that logger.
 func (sl spanLogger) With(fields ...zapcore.Field) Logger {
