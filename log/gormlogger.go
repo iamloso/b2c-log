@@ -1,25 +1,26 @@
 package log
 
 import (
-	"go.uber.org/zap"
+	"fmt"
+	"time"
 )
 
 // GormLogger struct
 type GormLogger struct{}
 
+var layout = "2006-01-02T15:04:05.000Z0700"
+
 // Print - Log Formatter
 func (*GormLogger) Print(v ...interface{}) {
+
 	switch v[0] {
 	case "sql":
-		Bg().Info(
-			"sql",
-			zap.Any("src", v[1]),
-			zap.Any("duration", v[2]),
-			zap.Any("sql", v[3]),
-			zap.Any("values", v[4]),
-			zap.Any("rows_returned", v[5]),
-		)
+		str := time.Now().Format(layout) + "    " + "SQL" + "    " + fmt.Sprintf("%v    %v    %v    %v", v[1], v[2], v[3], v[5])
+		_, _ = Hook().Write([]byte(str))
+		fmt.Println(str)
 	case "log":
-		Bg().Error("error", zap.Any("gorm", v[2]))
+		str := time.Now().Format(layout) + "    " + "GORM_ERROR" + "    " + fmt.Sprintf("%v", v[2])
+		_, _ = Hook().Write([]byte(str))
+		fmt.Println(str)
 	}
 }
