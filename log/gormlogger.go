@@ -32,9 +32,9 @@ func (*GormLogger) Print(v ...interface{}) {
 	switch v[0] {
 	case "sql":
 		content := fmt.Sprintf("%v", v[3])
-		params := strings.Split(ArrayToString(fmt.Sprintf("%v", v[4])), ",")
+		params := v[4].([]interface{})
 		for i := 0; i < len(params); i++ {
-			content = strings.Replace(content, "?", params[i], 1)
+			content = strings.Replace(content, "?", fmt.Sprintf("%v", params[i]), 1)
 		}
 		str := time.Now().Format(layout) + "    " + "SQL" + "    " + fmt.Sprintf("%v    %v    %v   %v\n", v[1], v[2], content, v[5])
 		_, _ = Hook().Write([]byte(str))
@@ -44,7 +44,4 @@ func (*GormLogger) Print(v ...interface{}) {
 		_, _ = Hook().Write([]byte(str))
 		fmt.Print(str)
 	}
-}
-func ArrayToString(array interface{}) string {
-	return strings.Replace(strings.Trim(fmt.Sprint(array), "[]"), " ", ",", -1)
 }
