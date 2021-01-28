@@ -15,12 +15,12 @@ func (*GormLogger) Print(v ...interface{}) {
 
 	switch v[0] {
 	case "sql":
-		str := time.Now().Format(layout) + "    " + "SQL" + "    " + fmt.Sprintf("%v    %v    %v    %v", v[1], v[2], v[3], v[5])
+		str := time.Now().Format(layout) + "    " + "SQL" + "    " + fmt.Sprintf("%v    %v    %v    %v\n", v[1], v[2], v[3], v[5])
 		_, _ = Hook().Write([]byte(str))
-		fmt.Println(str)
+		fmt.Print(str)
 	case "log":
-		str := time.Now().Format(layout) + "    " + "GORM_ERROR" + "    " + fmt.Sprintf("%v", v[2])
+		str := time.Now().Format(layout) + "    " + "GORM_ERROR" + "    " + fmt.Sprintf("%v\n", v[2])
 		_, _ = Hook().Write([]byte(str))
-		fmt.Println(str)
+		fmt.Print(str)
 	}
 }
