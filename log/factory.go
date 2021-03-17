@@ -24,6 +24,12 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+const (
+	logDir      = "service_log"
+	logSoftLink = "latest_log"
+	logLevel    = "debug"
+)
+
 // Factory is the default logging wrapper that can create
 // logger instances either for a given Context or context-less.
 type Factory struct {
@@ -37,6 +43,9 @@ func newFactory(logger *zap.Logger) Factory {
 
 // Bg creates a context-unaware logger.
 func Bg() Logger {
+	if _globalL.logger == nil {
+		initLog()
+	}
 	return logger(_globalL)
 }
 
@@ -44,6 +53,9 @@ func Bg() Logger {
 // contains an OpenTracing span, all logging calls are also
 // echo-ed into the span.
 func Ctx(ctx context.Context) Logger {
+	if _globalL.logger == nil {
+		initLog()
+	}
 	if span := opentracing.SpanFromContext(ctx); span != nil {
 		logger := spanLogger{span: span, logger: _globalL.logger}
 		if jaegerCtx, ok := span.Context().(jaeger.SpanContext); ok {
@@ -60,4 +72,7 @@ func Ctx(ctx context.Context) Logger {
 // With creates a child logger, and optionally adds some context fields to that logger.
 func (b Factory) With(fields ...zapcore.Field) Factory {
 	return Factory{logger: b.logger.With(fields...)}
+}
+func initLog() {
+	SetLogs(logLevel, logDir, logSoftLink)
 }
