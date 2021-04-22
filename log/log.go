@@ -94,7 +94,8 @@ func getWriter(logDir string, logSoftLink string) io.Writer {
 	if err != nil {
 		panic(err)
 	}
-	return hook
+	writer := io.MultiWriter(os.Stdout, hook)
+	return writer
 }
 
 // @title    PathExists
