@@ -55,7 +55,7 @@ func SetLogs(logLevel string, logDir string, logSoftLink string) {
 	_hook = getWriter(logDir, logSoftLink)
 	// 最后创建具体的Logger
 	core := zapcore.NewTee(
-		zapcore.NewCore(encoder, zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(_hook)), zap.NewAtomicLevelAt(zapLevel)), // 日志级别
+		zapcore.NewCore(encoder, zapcore.NewMultiWriteSyncer(zapcore.AddSync(_hook)), zap.NewAtomicLevelAt(zapLevel)), // 日志级别
 
 	)
 
