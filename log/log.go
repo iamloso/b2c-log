@@ -88,6 +88,8 @@ func getWriter(logDir string, logSoftLink string) io.Writer {
 		logDir+string(os.PathSeparator)+"%Y-%m-%d-%H-%M.log",
 		// generate soft link, point to latest log file
 		rotatelogs.WithLinkName(logSoftLink),
+
+		rotatelogs.WithMaxAge(1*time.Minute),
 		// time period of log file switching
 		rotatelogs.WithRotationTime(24*time.Hour),
 	)
