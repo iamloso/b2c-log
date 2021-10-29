@@ -28,6 +28,7 @@ const (
 	logDir      = "service_log"
 	logSoftLink = "latest_log"
 	logLevel    = "debug"
+	maxAge      = 7
 )
 
 // Factory is the default logging wrapper that can create
@@ -74,5 +75,5 @@ func (b Factory) With(fields ...zapcore.Field) Factory {
 	return Factory{logger: b.logger.With(fields...)}
 }
 func initLog() {
-	SetLogs(logLevel, logDir, logSoftLink)
+	SetLogs(logLevel, logDir, logSoftLink, maxAge)
 }
