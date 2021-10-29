@@ -18,7 +18,7 @@ var (
 func Hook() io.Writer {
 	return _hook
 }
-func SetLogs(logLevel string, logDir string, logSoftLink string) {
+func SetLogs(logLevel string, logDir string, logSoftLink string, maxAge int) {
 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:       TimeKey,
@@ -52,7 +52,10 @@ func SetLogs(logLevel string, logDir string, logSoftLink string) {
 	default:
 		zapLevel = zap.InfoLevel
 	}
-	_hook = getWriter(logDir, logSoftLink)
+	if maxAge == 0 {
+		maxAge = 7
+	}
+	_hook = getWriter(logDir, logSoftLink, maxAge)
 	// 最后创建具体的Logger
 	core := zapcore.NewTee(
 		zapcore.NewCore(encoder, zapcore.NewMultiWriteSyncer(zapcore.AddSync(_hook)), zap.NewAtomicLevelAt(zapLevel)), // 日志级别
@@ -74,7 +77,7 @@ func SetLogs(logLevel string, logDir string, logSoftLink string) {
 	_globalL = newFactory(zap.L())
 }
 
-func getWriter(logDir string, logSoftLink string) io.Writer {
+func getWriter(logDir string, logSoftLink string, maxAge int) io.Writer {
 
 	if ok, _ := pathExists(logDir); !ok {
 		// directory not exist
@@ -88,8 +91,7 @@ func getWriter(logDir string, logSoftLink string) io.Writer {
 		logDir+string(os.PathSeparator)+"%Y-%m-%d-%H-%M.log",
 		// generate soft link, point to latest log file
 		rotatelogs.WithLinkName(logSoftLink),
-
-		rotatelogs.WithMaxAge(1*time.Minute),
+		rotatelogs.WithMaxAge(time.Hour*time.Duration(maxAge*24)),
 		// time period of log file switching
 		rotatelogs.WithRotationTime(24*time.Hour),
 	)
